@@ -3,6 +3,7 @@ from nanpy import(ArduinoApi, SerialManager, Servo)
 import time
 import cwiid
 import sleep
+import os
 
 GPIO.setmode(GPIO.BOARD)
 #LED-pins
@@ -20,6 +21,17 @@ GPIO.setup(purpleBPin, GPIO.IN)
 
 blueBInput=GPIO.input(blueBPin)
 purpleBInput=GPIO.input(purpleBPin)
+
+def RPiB():
+    if blueBInput==True:
+        exit()
+    else:
+        pass
+    if purpleBInput==True:
+        time.sleep(2)
+        if purpleBInput==True:
+            os.system("shutdown now -h")
+
 
 def turnOnOffLED(colour, state):
     GPIO.output(colour, state)
@@ -63,6 +75,7 @@ turnOnOffLED(yPin, True)
         print('FAILED')
 
 
+
 #Wii Remote buttons(horisontal, B stands for Button)
 leftB=2048
 upB=512
@@ -103,26 +116,69 @@ def checkBPress():
             pass
         listNumber = listNumber - 1
 
-def _1():
+#declare servo
+wheelServo=Servo(9)
+#declare h-bridge-pins 1
+motor1Pin=3
+direction1Pin1=8
+direction1Pin2=7
+a.pinMode(motor1Pin, a.OUTPUT)
+a.pinMode(direction1Pin1, a.OUTPUT)
+a.pinMode(direction1Pin2, a.OUTPUT)
+#declare h-bridge-pins 2
+motor2Pin=11
+direction2Pin1=13
+direction2pin2=12
+a.pinMode(motor2Pin, a.OUTPUT)
+a.pinMode(direction2Pin1, a.OUTPUT)
+a.pinMode(direction2Pin2, a.OUTPUT)
+
+#does things after buttons pressed
+def RespondToWiiRemote():
     if boolLeft==True:
         #servo left
-    elif boolRigth==True::
+        wheelServo.write(45)
+    elif boolRight==True::
         #servo right
+        wheelServo.write(135)
     else:
         #servo middle
+        wheelServo.write(90)
     
     if boolBB==True:
-        #backwardspin on
+        a.digitalWrite(direction1Pin1, a.HIGH)
+        a.digitalWrite(direction1Pin2, a.LOW)
+        a.digitalWrite(direction2Pin1, a.HIGH)
+        a.digitalWrite(direction2Pin2, a.LOW)
     else:
-        #backwardspin off
+        a.digitalWrite(direction1Pin1, a.LOW)
+        a.digitalWrite(direction1Pin2, a.HIGH)
+        a.digitalWrite(direction2Pin1, a.LOW)
+        a.digitalWrite(direction2Pin2, a.HIGH)
     
     if boolOneB==True:
         if boolTwoB==True:
             #drive at full speed
+            a.digitalWrite(motor1Pin, a.HIGH)
+            a.digitalWrite(motor2Pin, a.HIGH)
         else:
             #drive at half speed
+            a.analogWrite(motor1Pin, 127)
+            a.analogWrite(motor1Pin, 127)            
+    else:
+        #turn off motors
+        a.digitalWrite(motor1Pin, a.LOW)
+        a.digitalWrite(motor2Pin, a.LOW)
 
-    if boolHomeB==True
+    if boolHomeB==True:
+        #shut down program
+        quit()
+
+def Main():
+    checkBPress()
+    RespondToWiiRemote()
+    time.sleep(0.1)
+    
 
 
     
