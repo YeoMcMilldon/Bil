@@ -1,4 +1,4 @@
-If the text looks weird use the raw mode above if you are on github.com
+This text does look Much better if you look in raw mode.
 The word "Bil" is car in swedish.
 If you want use my program, you will have to read mostly everything of this text. If you do not it is most likely that it does not work
 First install the nanpy module and the firmware(to the Arduino Uno). There is a guide on this link: https://youtube.com/watch?v=QumlhvYtRKQ.
