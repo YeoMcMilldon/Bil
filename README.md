@@ -1,8 +1,14 @@
 This text does look Much better if you look in raw mode.
 The word "Bil" is car in swedish.
-If you want use my program, you will have to read mostly everything of this text. If you do not it is most likely that it does not work
+If you want use my program, you will have to read mostly everything of this text. If you do not it is most likely that it does not work.
+I used a Raspberry pi 3 model B, an Arduino Uno, a USB-cable, a Wii Remote and everything on the diagram.
+Note that this program will be using cwiid which is very old. That is why you can't use python 3. You have to use python 2.
 First install the nanpy module and the firmware(to the Arduino Uno). There is a guide on this link: https://youtube.com/watch?v=QumlhvYtRKQ.
 IT IS VERY IMPORTANT to put 1 instead of 0 on #define USE_SERVO in cfg.h(3:42 in the video).
+Nanpy will make so that we can control the Arduino with the Raspberry pi.
+
+Install cwiid. That will be needed to use the Wii Remote.
+
 Add startFromBootGitBil.py to /etc/rc.local. Type "python [full path]" above "exit 0" (the quotes are the show what to type, do not type the quotes in rc.local). In this example, I have already typed "python  /home/pi/Desktop/Bil/startFromBootGitBil.py".
 This is rc.local
 
@@ -31,7 +37,9 @@ exit 0
 
 Connect everthing as on the diagram in the file "Diagram".
 Use an USB-cable and connect the Raspberry Pi 3 and the Arduino Uno.
+
 Edit the file startFromBootGitBil.py and change the variable GitBilPath to the path of GitBil.py
+
 After you have booted the Raspberry Pi 3, click the button connected to pin 18 on the Raspberry Pi 3(the blue button). 
 If you have done everything correctly the yellow LED should be lit. Click the red sync button on the Wii Remote. 
 If the green LED is lit you have synced successfully.If the red LED was lit instead you will have to try again.
