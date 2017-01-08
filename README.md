@@ -35,7 +35,7 @@ exit 0
 
 
 
-Connect everthing as on the diagram in the file "Diagram".
+Connect everthing as on the diagram in the file "Diagram.png".
 Use an USB-cable and connect the Raspberry Pi 3 and the Arduino Uno.
 
 Edit the file startFromBootGitBil.py and change the variable GitBilPath to the path of GitBil.py
