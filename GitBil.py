@@ -178,7 +178,7 @@ def RespondToWiiRemote():
         else:
             print("drive at half speed")
             a.analogWrite(motor1Pin, 127)
-            a.analogWrite(motor1Pin, 127)            
+            a.analogWrite(motor2Pin, 127)            
     else:
         print("turn off motors")
         a.digitalWrite(motor1Pin, a.LOW)
