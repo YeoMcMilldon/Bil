@@ -1,9 +1,11 @@
 import RPi.GPIO as GPIO
+GPIO.cleanup()
 from nanpy import(ArduinoApi, SerialManager, Servo)
 import time
 import cwiid
-import sleep
+import time
 import os
+import sys
 
 GPIO.setmode(GPIO.BOARD)
 #LED-pins
@@ -14,31 +16,35 @@ GPIO.setup(yPin, GPIO.OUT)
 GPIO.setup(gPin, GPIO.OUT)
 GPIO.setup(rPin, GPIO.OUT)
 #button-pins
-blueBPin=16
-purpleBPin=18
+blueBPin=18
+purpleBPin=16
 GPIO.setup(blueBPin, GPIO.IN)
 GPIO.setup(purpleBPin, GPIO.IN)
 
-blueBInput=GPIO.input(blueBPin)
-purpleBInput=GPIO.input(purpleBPin)
+
 
 def RPiB():
+    blueBInput=GPIO.input(blueBPin)
+    purpleBInput=GPIO.input(purpleBPin)
     if blueBInput==True:
-        exit()
+        print("exiting program")
+        GPIO.cleanup()
+        sys.exit()
     else:
         pass
     if purpleBInput==True:
         time.sleep(2)
         if purpleBInput==True:
+            print("shutting down")
             os.system("shutdown now -h")
 
 
 def turnOnOffLED(colour, state):
     GPIO.output(colour, state)
 
-def LEDOnOff(time, pin):
+def LEDOnOff(seconds, pin):
     turnOnOffLED(pin, True)
-    time.sleep(time)
+    time.sleep(seconds)
     turnOnOffLED(pin, False)
 
 
@@ -61,7 +67,7 @@ for x in range(0, 3):
 
 #start serial communication with Arduino Uno
 turnOnOffLED(yPin, True)
- for x in range(0, 3)
+for x in range(0, 3):
     try:
         print('Starting serial communication')
         connection = SerialManager()
@@ -73,6 +79,8 @@ turnOnOffLED(yPin, True)
         turnOnOffLED(yPin, False)
         LEDOnOff(2, rPin)
         print('FAILED')
+
+print("serial communication done")
 
 
 
@@ -101,20 +109,25 @@ boolMinusB=False
 boolOneB=False
 boolTwoB=False
 
-boolBList[boolTwoB, boolOneB, boolBB, boolAB, boolMinusB, boolHomeB, boolUpB, boolRightB, boolLeftB, boolPlusB]
-BList[twoB, oneB, bB, aB, minusB, homeB, upB, rightB, leftB, plusB]
-BPress=wm.state['buttons']
+boolBList=[boolTwoB, boolOneB, boolBB, boolAB, boolMinusB, boolHomeB, downB, boolUpB, boolRightB, boolLeftB, boolPlusB]
+BList=[twoB, oneB, bB, aB, minusB, homeB, downB, upB, rightB, leftB, plusB]
+#BPress=wm.state['buttons']
 
 #checking which buttons are pressed
 def checkBPress():
-    global boolBlist, Blist, BPress, boolTwoB, boolOneB, boolBB, boolAB, boolMinusB, boolHomeB, boolUpB, boolRightB, boolLeftB, boolPlusB
-    for listNumber in range(9, -1, -1):
+    global boolBList, Blist, BPress, boolTwoB, boolOneB, boolBB, boolAB, boolMinusB, boolHomeB, boolUpB, boolRightB, boolLeftB, boolPlusB
+    #boolBList=[boolTwoB, boolOneB, boolBB, boolAB, boolMinusB, boolHomeB, boolUpB, boolRightB, boolLeftB, boolPlusB]
+    BPress=wm.state['buttons']
+    for listNumber in range(10, -1, -1):
         if BPress >= BList[listNumber]:
-            boolBList[listNumber] == True
+            boolBList[listNumber] = True
+            print(BPress, listNumber)
             BPress = BPress - BList[listNumber]
         else:
             pass
-        listNumber = listNumber - 1
+            #print("hello")
+        
+        #listNumber = listNumber - 1
 
 #declare servo
 wheelServo=Servo(9)
@@ -128,24 +141,25 @@ a.pinMode(direction1Pin2, a.OUTPUT)
 #declare h-bridge-pins 2
 motor2Pin=11
 direction2Pin1=13
-direction2pin2=12
+direction2Pin2=12
 a.pinMode(motor2Pin, a.OUTPUT)
 a.pinMode(direction2Pin1, a.OUTPUT)
 a.pinMode(direction2Pin2, a.OUTPUT)
 
 #does things after buttons pressed
 def RespondToWiiRemote():
-    if boolLeft==True:
-        #servo left
+    global boolBList
+    if boolBList[9]==True:
+        print("servo left")
         wheelServo.write(45)
-    elif boolRight==True::
-        #servo right
+    elif boolBList[8]==True:
+        print("servo right")
         wheelServo.write(135)
     else:
-        #servo middle
+        print("servo middle")
         wheelServo.write(90)
     
-    if boolBB==True:
+    if boolBList[2]==True:
         a.digitalWrite(direction1Pin1, a.HIGH)
         a.digitalWrite(direction1Pin2, a.LOW)
         a.digitalWrite(direction2Pin1, a.HIGH)
@@ -156,28 +170,40 @@ def RespondToWiiRemote():
         a.digitalWrite(direction2Pin1, a.LOW)
         a.digitalWrite(direction2Pin2, a.HIGH)
     
-    if boolOneB==True:
-        if boolTwoB==True:
-            #drive at full speed
+    if boolBList[1]==True:
+        if boolBList[0]==True:
+            print("drive at full speed")
             a.digitalWrite(motor1Pin, a.HIGH)
             a.digitalWrite(motor2Pin, a.HIGH)
         else:
-            #drive at half speed
+            print("drive at half speed")
             a.analogWrite(motor1Pin, 127)
             a.analogWrite(motor1Pin, 127)            
     else:
-        #turn off motors
+        print("turn off motors")
         a.digitalWrite(motor1Pin, a.LOW)
         a.digitalWrite(motor2Pin, a.LOW)
 
-    if boolHomeB==True:
-        #shut down program
-        quit()
+    if boolBList[5]==True:
+        print("shut down program")
+        GPIO.cleanup()
+        sys.exit()
+
+def resetBoolBList():
+    global boolBList
+    for listNumber in range(0, 11):
+        boolBList[listNumber]=False
+        
 
 def Main():
     checkBPress()
     RespondToWiiRemote()
+    RPiB()
+    resetBoolBList()
     time.sleep(0.1)
+    
+while True:
+    Main()
     
 
 

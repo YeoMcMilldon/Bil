@@ -4,22 +4,28 @@
 
 import RPi.GPIO as GPIO
 import os
-
+GPIO.setmode(GPIO.BOARD)
 #button-pins
-blueBPin=16
-purpleBPin=18
+blueBPin=18
+purpleBPin=16
 GPIO.setup(blueBPin, GPIO.IN)
 GPIO.setup(purpleBPin, GPIO.IN)
 
-blueBInput=GPIO.input(blueBPin)
-purpleBInput=GPIO.input(purpleBPin)
 
 def RPiB():
+    blueBInput=GPIO.input(blueBPin)
+    purpleBInput=GPIO.input(purpleBPin)
+    
     if blueBInput==True:
-        os.system("python GitBil.py")
+        print("hello!!!")
+        os.system("sudo python /home/pi/Desktop/Bil/GitBil.py")
     else:
         pass
     if purpleBInput==True:
+        print("asdkfjasd;fldjas")
         time.sleep(2)
         if purpleBInput==True:
             os.system("shutdown now -h")
+
+while True:
+    RPiB()
