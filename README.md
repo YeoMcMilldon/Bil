@@ -2,8 +2,8 @@ If the text looks weird use the raw mode above if you are on github.com
 If you want use my program, you will have to read mostly everything of this text. If you do not it is most likely that it does not work
 First install the nanpy module and the firmware(to the Arduino Uno). There is a guide on this link: https://youtube.com/watch?v=QumlhvYtRKQ.
 IT IS VERY IMPORTANT to put 1 instead of 0 on #define USE_SERVO in cfg.h(3:42 in the video).
-Add startFromBootGitBil.py to /etc/rc.local. Type "python [full path]" (the quotes are the show what to type, do not type the quotes in rc.local
-this is rc.local
+Add startFromBootGitBil.py to /etc/rc.local. Type "python [full path]" above "exit 0" (the quotes are the show what to type, do not type the quotes in rc.local). In this example, I have already typed "python  /home/pi/Desktop/Bil/startFromBootGitBil.py".
+This is rc.local
 
 #!/bin/sh -e
 #
